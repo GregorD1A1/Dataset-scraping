@@ -13,7 +13,7 @@ fullHD_height = 1080
 search_window_xpath = "//input[@type='text']"
 accept_cookie_button_xpath = "//div[contains(text(),'Zgadzam')]"
 images_xpath = "//div[1]/div[1]/div[1]/span[1]/div[1]/div[1]/div[.]/a[1]/div[1]/img[1]"
-fin_img_xpath = "//div[1]/div[1]/div[1]/span[1]/div[1]/div[1]/div[150]/a[1]/div[1]/img[1]"
+fin_img_xpath = "//div[1]/div[1]/div[1]/span[1]/div[1]/div[1]/div[98]/a[1]/div[1]/img[1]"
 
 # program
 # włączanie przeglądarki i google images, zamykanie okna z ciasteczkami
