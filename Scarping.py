@@ -8,15 +8,12 @@ from time import sleep
 driver = webdriver.Firefox()
 search_key = 'spitfire'
 dataset_dir = 'dataset_dir'
-fullHD_height = 1080
-n_scrolls = 6
+n_scrolls = 10
 
 search_window_xpath = "//input[@type='text']"
 accept_cookie_button_xpath = "//div[contains(text(),'Zgadzam')]"
 images_xpath = "//div[1]/div[1]/span[1]/div[1]/div[1]/div[.]/a[1]/div[1]/img[1]"
-
-
-fin_img_xpath = "//div[1]/div[1]/div[1]/span[1]/div[1]/div[1]/div[98]/a[1]/div[1]/img[1]"
+more_imgs_button_xpath = "//div[1]/div[1]/div[1]/div[2]/div[1]/div[2]/div[2]/input[1]"
 
 # program
 # włączanie przeglądarki i google images, zamykanie okna z ciasteczkami
@@ -36,19 +33,21 @@ search_window.send_keys(Keys.RETURN)
 # wyszukiwanie i pobieranie obrazów
 Wait(driver,30).until(ExpCon.presence_of_element_located((
     By.XPATH, images_xpath)))
-for _ in range(n_scrolls):
-    driver.execute_script(f"window.scrollTo(0, {str(2*fullHD_height)})")   # skrolowanie, by pojawiło się więcej obrazów
+for n_scroll in range(n_scrolls):
+    # skrolowanie w sam dół strony, by pojawiło się więcej obrazów
+    driver.execute_script(f"window.scrollTo(0, document.body.scrollHeight)")
 
     images = driver.find_elements_by_xpath(images_xpath)
-    print(len(images))
+    print(f'n_scroll:{n_scroll}, ilość obrazów: {len(images)}')
     # tak właściwie to tylko zapisy z ostatniej iteracji się liczą, poprzednie są nadpisywane. Poprzednie iteracje
     # jednak są potrzebne, by poskakać po obrazach i one się utrwaliły do tej ostatniej
     for nr, image in enumerate(images):
         with open(f'dataset_dir/{search_key}_{nr}.png', 'wb') as file:
             file.write(image.screenshot_as_png)
 
-    #if n_scroll == 5:
-        #pokaż więcej wyników.click()
+    # klikanie przycisku "więcej obrazów"
+    if n_scroll == 5:
+        driver.find_element_by_xpath(more_imgs_button_xpath).click()
 
 # zamykanie przeglądarki
 driver.close()
